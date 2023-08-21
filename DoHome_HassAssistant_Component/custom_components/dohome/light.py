@@ -44,7 +44,7 @@ class DoHomeLight(DoHomeDevice, LightEntity):
 
         self._device = device
         self._state = False
-        self._rgb = (255, 255, 255, 255, 255)
+        self._rgb = (0, 0, 0, 0, 0)
         self._brightness = 100
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -63,6 +63,17 @@ class DoHomeLight(DoHomeDevice, LightEntity):
     @property
     def is_on(self):
         """Return true if light is on."""
+        data = { "cmd":25 }
+        op = json.dumps(data)
+
+        try:
+            resp = self._send_cmd(self._device,'cmd=ctrl&devices={[' + self._device["sid"] + ']}&op=' + op + '}', 25)
+            self._rgb = (resp["r"], resp["g"], resp["b"], resp["w"], resp["m"])
+            self._state = (sum(self._rgb) > 0)
+
+        except:
+            _LOGGER.debug("Error when reading device state: %s", resp)
+
         return self._state
 
     @property
