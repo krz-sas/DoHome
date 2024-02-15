@@ -56,6 +56,10 @@ class DoHomeSwitch(DoHomeDevice, SwitchEntity):
         """Return true if plug is on."""
         return self._state
 
+    @property
+    def unique_id(self):
+        return self._device["name"]
+
     def turn_on(self, **kwargs):
         """Turn the switch on."""
         self._state = True
