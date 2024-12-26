@@ -9,7 +9,7 @@ import socket
 from datetime import timedelta
 from homeassistant.helpers.event import track_time_interval
 
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import UnitOfTemperature
 
 from . import (DOHOME_GATEWAY, DoHomeDevice)
 
@@ -84,7 +84,7 @@ class DoHomeSensor(DoHomeDevice):
     def unit_of_measurement(self):
         """Return the unit of measurement of this entity, if any."""
         if self._is_temperature and self.current_value != 100:
-            return TEMP_CELSIUS
+            return UnitOfTemperature.CELSIUS
         elif self._is_humidity and self.current_value != 0:
             return '%'
         elif self._is_illumination and self.current_value != -1:
